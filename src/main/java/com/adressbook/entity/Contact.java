@@ -50,4 +50,5 @@ public class Contact {
     public void setImage(byte[] image) {
         this.image = image;
     }
+
 }

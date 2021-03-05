@@ -22,19 +22,8 @@ public class ContactController {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @GetMapping("/test")
-    private Map<String, Object> test(){
-        Map<String, Object> test = new HashMap<>();
-        Contact contact = new Contact();
-        contact.setName("Laza");
-        contact.setEmail("rista007@gmail.com");
-        test.put("contact", contact);
-        test.put("image", "img");
-        return test;
-    }
-
     @PostMapping("/contact")
-    private ResponseEntity<Object> addContact(@RequestBody Map<String, Object>inputMap){
+    public ResponseEntity<Object> addContact(@RequestBody Map<String, Object>inputMap){
         Contact contact = objectMapper.convertValue(inputMap.get("contact"), Contact.class);
         byte[] image = Base64.getDecoder().decode((String)inputMap.get("image"));
         contact.setImage(image);
@@ -43,11 +32,30 @@ public class ContactController {
     }
 
     @PutMapping("/contact")
-    private ResponseEntity<Object> editContact(@RequestBody Map<String, Object>inputMap){
+    public ResponseEntity<Object> editContact(@RequestBody Map<String, Object>inputMap){
         Contact contact = objectMapper.convertValue(inputMap.get("contact"), Contact.class);
         byte[] image = Base64.getDecoder().decode((String)inputMap.get("image"));
         contact.setImage(image);
         contactService.editContact(contact);
-        return new ResponseEntity<>("sucessfully edited contact", HttpStatus.CREATED);
+        return new ResponseEntity<>("sucessfully edited contact", HttpStatus.OK);
+    }
+
+    @DeleteMapping("/deleteContact/{id}")
+    public ResponseEntity<Object> deleteContact(@PathVariable Long id){
+        contactService.deleteContact(id);
+        return new ResponseEntity<>("sucessfully deleted contact", HttpStatus.OK);
+    }
+
+    @GetMapping("/findByName")
+    public ResponseEntity<Object> findByName(@RequestParam String contactName){
+        if (contactService.findByName(contactName) != null)
+            return new ResponseEntity<>(contactService.findByName(contactName), HttpStatus.OK);
+        else return new ResponseEntity<>("contact does not exist", HttpStatus.NO_CONTENT);
+    }
+
+    @PostMapping("/exportToCSV")
+    public ResponseEntity<Object> exportToCSV() throws IOException {
+        contactService.exportToCSV();
+        return new ResponseEntity<>("CSV created", HttpStatus.OK);
     }
 }
