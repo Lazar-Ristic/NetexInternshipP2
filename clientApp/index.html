@@ -6,17 +6,13 @@
   <link rel="stylesheet" href="style.css">
   <script src="jquery.min.js"></script>
   <script src="bootstrap.min.js"></script>
+  <script src="index.jsx" defer></script>
 </head>
 <body>
 
   <nav class="navbar navbar-inverse">
     <div class="container-fluid">
       <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>                        
-        </button>
         <a class="navbar-brand" href="#">Logo</a>
       </div>
       <div class="collapse navbar-collapse" id="myNavbar">
@@ -27,12 +23,15 @@
   <div class="container"> 
     <div class="d-flex justify-content-between p-2">
       <div class="col-sm-3 form-outline">
-        <input type="search" class="form-control">
+        <input type="search" id="findByNameInput" class="form-control" onkeyup="findByName()">
       </div>
       <div class="col-sm-3">
-        <button class="btn btn-primary">add</button>
-        <button class="btn btn-primary">export</button>
+        <button class="btn btn-primary" onclick="onAdd()">add</button>
+        <button class="btn btn-primary" onclick="exportToCSV()">export</button>
+        <div id="exportMessage"></div>
       </div>
+    </div>
+    <div id="contactForm">
     </div>
     <div class="p-2">
       <table class="table">
@@ -41,16 +40,11 @@
             <th scope="col">#</th>
             <th scope="col">Name</th>
             <th scope="col">Email</th>
+            <th scope="col">Image</th>
             <th scope="col" class="text-center">Actions</th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <td scope="row">1</td>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-          </tr>
+        <tbody id="indexTable">
         </tbody>
       </table>
     </div>   
@@ -66,7 +60,6 @@
   <footer class="container-fluid text-center">
     <p>Footer Text</p>
   </footer>
-  
   </body>
   </html>
   

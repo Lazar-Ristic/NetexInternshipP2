@@ -22,6 +22,7 @@ public class ContactController {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @CrossOrigin
     @PostMapping("/contact")
     public ResponseEntity<Object> addContact(@RequestBody Map<String, Object>inputMap){
         Contact contact = objectMapper.convertValue(inputMap.get("contact"), Contact.class);
@@ -31,6 +32,7 @@ public class ContactController {
         return new ResponseEntity<>("sucessfully added contact", HttpStatus.CREATED);
     }
 
+    @CrossOrigin
     @PutMapping("/contact")
     public ResponseEntity<Object> editContact(@RequestBody Map<String, Object>inputMap){
         Contact contact = objectMapper.convertValue(inputMap.get("contact"), Contact.class);
@@ -40,12 +42,15 @@ public class ContactController {
         return new ResponseEntity<>("sucessfully edited contact", HttpStatus.OK);
     }
 
+
+    @CrossOrigin
     @DeleteMapping("/deleteContact/{id}")
     public ResponseEntity<Object> deleteContact(@PathVariable Long id){
         contactService.deleteContact(id);
         return new ResponseEntity<>("sucessfully deleted contact", HttpStatus.OK);
     }
 
+    @CrossOrigin
     @GetMapping("/findByName")
     public ResponseEntity<Object> findByName(@RequestParam String contactName){
         if (contactService.findByName(contactName) != null)
@@ -53,6 +58,7 @@ public class ContactController {
         else return new ResponseEntity<>("contact does not exist", HttpStatus.NO_CONTENT);
     }
 
+    @CrossOrigin
     @PostMapping("/exportToCSV")
     public ResponseEntity<Object> exportToCSV() throws IOException {
         contactService.exportToCSV();
